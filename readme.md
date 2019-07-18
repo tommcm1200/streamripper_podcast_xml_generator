@@ -1,7 +1,12 @@
+# Overview
+This template is a podcast XML generator for the Streamripper episodes.
 
+##Pre-reqs
+Create s3 bucket which episodes will be stored.
 
-sam package --template-file sam.yaml --s3-bucket tommcm-streamripper --output-template-file packaged.yaml
+##Deployment
+sam package --template-file sam.yaml --s3-bucket [BUCKETNAME] --output-template-file packaged.yaml
 
-aws cloudformation deploy --template-file /Users/tommcm/Git/streamripper_podcast_xml_generator/packaged.yaml --stack-name streamripper-podcast-generator --parameter-overrides  ParameterKey=MusicBucket,ParameterValue=tommcm-streamripper
+aws cloudformation deploy --template-file packaged.yaml --stack-name [STACKNAME] --parameter-overrides  MusicBucket=[BUCKETNAME]--capabilities CAPABILITY_IAM
 
 
