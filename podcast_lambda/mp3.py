@@ -45,7 +45,7 @@ def make_root():
 
 	# check all mp3 files in the bucket
 	for x in a['Contents']:
-		if 'mp3' in x['Key'] and  '/' in x['Key']:
+		if ('mp3' in x['Key'] or 'mp4' in x['Key']) and  '/' in x['Key']:
 
 			# create presigned URL for the MP3
 			z 			= s.generate_presigned_url('get_object', Params = {'Bucket': s3_bucket, 'Key': x['Key']}, ExpiresIn = link_expiry)

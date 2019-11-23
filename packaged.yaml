@@ -9,7 +9,7 @@ Parameters:
 Resources:
   lambdapodcast:
     Properties:
-      CodeUri: s3://tommcm-streamripper/082cd0d804b7d0d46c2b7c123f2fe85c
+      CodeUri: s3://tommcm-streamripper/604f4b2ae09737b7b5e41c172cc08b30
       Description: Build a serverless podcast feeds using your S3 bucket with music
         and Lambda
       Environment:
