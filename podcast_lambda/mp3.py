@@ -5,6 +5,7 @@
 
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring 
 import boto3, os, time
+from botocore.client import Config
 import datetime
 
 # the following environment variables are set - I'll put these as SAM variables in the future
