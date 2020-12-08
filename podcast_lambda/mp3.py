@@ -40,15 +40,16 @@ def make_root():
 	SubElement(image, 'link').text = podcast_url
 
 	# create session to s3 music bucket
-	s	= boto3.client('s3')
-	a	= s.list_objects_v2(Bucket = s3_bucket)
+	# s	= boto3.client('s3')
+	s3 = boto3.client('s3', config=Config(signature_version='s3v4'))
+	a	= s3.list_objects_v2(Bucket = s3_bucket)
 
 	# check all mp3 files in the bucket
 	for x in a['Contents']:
 		if ('mp3' in x['Key'] or 'mp4' in x['Key']) and  '/' in x['Key']:
 
 			# create presigned URL for the MP3
-			z 			= s.generate_presigned_url('get_object', Params = {'Bucket': s3_bucket, 'Key': x['Key']}, ExpiresIn = link_expiry)
+			z 			= s3.generate_presigned_url('get_object', Params = {'Bucket': s3_bucket, 'Key': x['Key']}, ExpiresIn = link_expiry)
 			
 			# use the folder name as the radiostationist name and the filename as the showname name
 			radiostation, showname, episode 	= x['Key'].split('/')
@@ -83,7 +84,7 @@ def make_root():
 			SubElement(item, 'guid').text = x['Key'].strip()
 
 	# upload the rss.xml file to S3 - in the future, include "ACL = 'public-read'" as a flag to publish the XML file
-	s.put_object(Bucket = s3_bucket, Body = tostring(rss), Key = 'podcast.xml', ContentType = 'application/xml', ACL = 'public-read')
+	s3.put_object(Bucket = s3_bucket, Body = tostring(rss), Key = 'podcast.xml', ContentType = 'application/xml', ACL = 'public-read')
 	print('uploaded XML document of '+str(len(tostring(rss)))+' bytes to https://'+s3_bucket+'.s3.amazonaws.com/podcast.xml')
 
 # lambda handler
