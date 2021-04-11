@@ -1,33 +1,33 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Build a serverless podcast feeds using your S3 bucket with music and
-  Lambda
+Transform: AWS::Serverless-2016-10-31
 Parameters:
   MusicBucket:
+    Type: String
     Description: Name of an existing S3 bucket with MP3 files. Put the artists tracks
       in separate folders in the root.
-    Type: String
+Description: Build a serverless podcast feeds using your S3 bucket with music and
+  Lambda
 Resources:
   lambdapodcast:
+    Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://tommcm-streamripper/604f4b2ae09737b7b5e41c172cc08b30
+      Handler: mp3.handler
+      Runtime: python3.6
       Description: Build a serverless podcast feeds using your S3 bucket with music
         and Lambda
+      MemorySize: 128
+      Timeout: 300
+      CodeUri: s3://tommcm-streamripper/b7aa5421c4f9a2e8b05c7c17eed5bd49
       Environment:
         Variables:
           s3_bucket:
             Ref: MusicBucket
       Events:
         Cron:
+          Type: Schedule
           Properties:
             Schedule: rate(1 hour)
-          Type: Schedule
-      Handler: mp3.handler
-      MemorySize: 128
       Policies:
       - S3CrudPolicy:
           BucketName:
             Ref: MusicBucket
-      Runtime: python3.6
-      Timeout: 60
-    Type: AWS::Serverless::Function
-Transform: AWS::Serverless-2016-10-31

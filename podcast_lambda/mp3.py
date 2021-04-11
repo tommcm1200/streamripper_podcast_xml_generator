@@ -12,7 +12,8 @@ podcast_img 	= 'https://tommcm-streamripper.s3.amazonaws.com/podcast.jpg'
 link_expiry 	= '604800'
 s3_bucket		= os.environ['s3_bucket']
 
-s3 = boto3.client("s3")
+# s3 = boto3.client("s3")
+s3 = boto3.client('s3', config=Config(signature_version='s3v4'))
 
 def get_matching_s3_objects(bucket, prefix="", suffix=""):
     """
